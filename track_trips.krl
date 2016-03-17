@@ -33,7 +33,7 @@ ruleset track_trips {
       pre{
         mileage = event:attr("mileage").klog("our passed in input: ");
       }
-      if (STRTOINT(mileage) > long_trip) then {
+      if (STRTOINT(mileage) == 100) then {
       send_directive("trip") with
             trip_length = mileage;
 
