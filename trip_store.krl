@@ -1,35 +1,33 @@
-ruleset track_trips {
+ruleset trip_store {
     meta {
-        name "Track Trips 2"
+        name "Trip Store"
         description <<
-        a second ruleset for tracking trips
+        a second ruleset for storing trips
         >>
         author "Spencer Krieger"
         logging on
         sharing on
-        provides hello
     }
     global {
         long_trip = 100
     }
 
-    rule process_trip {
-      select when car new_trip
+    rule collect_trips {
+      select when explicit trip_processed
       pre{
-        mileage = event:attr("mileage").klog("our passed in input: ");
+        trip = {"mileage": event:attr("mileage"), "date": event:attr("date")};
       }
       {
-      send_directive("trip") with
-            trip_length = mileage;
+      send_directive("adding") with
+            trip_length = trip{"mileage"};
       }
       fired {
-      raise explicit event 'trip_processed'
-          attributes event:attrs();
+      ent:trips.append(trip)
       }
     }
 
-    rule find_long_trips{
-      select when explicit trip_processed
+    rule collect_long_trips{
+      select when explicit found_long_trip
       pre{
         mileage = event:attr("mileage").klog("our passed in input: ");
       }
