@@ -37,7 +37,7 @@ ruleset echo {
       }
       {
         send_directive("say") with
-          something = "{input}";
+          something = input;
       }
     }
 }

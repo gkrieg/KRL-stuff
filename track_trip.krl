@@ -23,7 +23,7 @@ ruleset track_trips {
       }
       {
         send_directive("trip") with
-          trip_length = "{mileage}";
+          trip_length = mileage;
       }
     }
 }
