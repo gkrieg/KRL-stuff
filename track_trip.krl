@@ -1,6 +1,6 @@
 ruleset track_trips {
     meta {
-        name "echo stuff"
+        name "Track Trips"
         description <<
         a first ruleset for the Quickstart
         >>
