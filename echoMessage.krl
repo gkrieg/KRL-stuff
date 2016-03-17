@@ -16,7 +16,7 @@ ruleset echo {
         };
     }
 
-    rule hello_world {
+    rule hello {
       select when echo hello
       pre{
         name = event:attr("name").klog("our passed in Name: ");
