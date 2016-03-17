@@ -22,7 +22,7 @@ ruleset track_trips {
       send_directive("trip") with
             trip_length = mileage;
       }
-      fired {
+      always {
       raise explicit event trip_processed
           attributes event:attrs()
       }
