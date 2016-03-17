@@ -22,7 +22,7 @@ ruleset trip_store {
             trip_length = trip{"mileage"};
       }
       fired {
-      ent:trips.append(trip)
+      set ent:trips ent:trips.append(trip)
       }
     }
 
