@@ -24,7 +24,8 @@ ruleset track_trips {
       }
       always {
       raise explicit event trip_processed
-          attributes event:attrs()
+          attributes {
+          "hotcross": "buns"}
       }
     }
 
