@@ -9,7 +9,14 @@ ruleset trip_store {
         sharing on
     }
     global {
-        long_trip = 100
+        long_trip = 100;
+        trips_func = function(trips) {
+        trips_return = trips;
+        };
+        long_trips_func = function(long_trips) {
+          long_trips_return = long_trips;
+        };
+
     }
 
     rule collect_trips {
@@ -29,16 +36,27 @@ ruleset trip_store {
     rule collect_long_trips{
       select when explicit found_long_trip
       pre{
-        mileage = event:attr("mileage").klog("our passed in input: ");
+        long_trip = {"mileage": event:attr("mileage"), "date": event:attr("date")};
       }
-      if (mileage > long_trip) then {
-        send_directive("found_long_trip") with
-          trip_length = mileage;
-        }
+      {
+      send_directive("adding_long") with
+            trip_length = trip{"mileage"};
+      }
 
       fired {
-        raise explicit event 'found_long_trip'
-          attributes event:attrs();
+        set ent:long_trips ent:long_trips.append(long_trip)
+        }
+      }
+
+      rule clear_trips {
+        select when explicit trip_processed
+        {
+        send_directive("erasing") with
+              trip_length = trip{"mileage"};
+        }
+        fired {
+        clear ent:trips
+        clear ent:long_trips
         }
       }
 }
