@@ -10,10 +10,7 @@ ruleset track_trips {
         provides hello
     }
     global {
-        hello = function(obj) {
-            msg = "Hello " + obj
-            msg
-        };
+        long_trip = 100
     }
 
     rule process_trip {
@@ -22,8 +19,27 @@ ruleset track_trips {
         mileage = event:attr("mileage").klog("our passed in input: ");
       }
       {
-        raise explicit event 'trip_processed'
-            attibutes event:attrs()
+      send_directive("trip") with
+            trip_length = mileage;
+      }
+      fired {
+      raise explicit event 'trip_processed'
+          attributes event:attrs()
       }
     }
+
+    rule find_long_trips{
+      select when explicit trip_processed
+      pre{
+        mileage = event:attr("mileage").klog("our passed in input: ");
+      }
+      if (mileage > long_trip) then {
+      send_directive("trip") with
+            trip_length = mileage;
+
+      }
+      fired {
+        raise explicit event 'found_long_trip'
+        }
+      }
 }
