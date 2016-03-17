@@ -18,10 +18,7 @@ ruleset track_trips {
       pre{
         mileage = event:attr("mileage").klog("our passed in input: ");
       }
-      {
-      send_directive("trip") with
-            trip_length = mileage;
-      }
+
       always {
       raise explicit event trip_processed
           attributes {
@@ -32,7 +29,7 @@ ruleset track_trips {
     rule find_long_trips{
       select when explicit trip_processed
       pre{
-        mileage = event:attr("mileage").klog("our passed in input: ");
+        mileage = event:attr("mileage").klog("our passed in other input: ");
       }
       send_directive("trip") with
             trip_length = mileage;
