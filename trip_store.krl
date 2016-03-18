@@ -56,7 +56,7 @@ ruleset trip_store {
       }
 
       rule clear_trips {
-        select when explicit trip_processed
+        select when car trip_reset
         {
         send_directive("erasing") with
           trip_length = "50";
