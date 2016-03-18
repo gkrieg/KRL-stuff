@@ -7,16 +7,23 @@ ruleset trip_store {
         author "Spencer Krieger"
         logging on
         sharing on
+        provides trips, long_trips, short_trips
     }
     global {
         long_trip = 100;
-        trips_func = function(trips) {
-        trips_return = trips;
-        };
-        long_trips_func = function(long_trips) {
-          long_trips_return = long_trips;
-        };
+        trips = function() {
+          trips_arr = ent:trips;
+          trips_arr
+        }
+        long_trips = function() {
+          long_trips_arr = ent:long_trips;
+          long_trips_arr
+        }
+        short_trips = function() {
+          short_trips_arr = ent:trips.filter(function(x){x["mileage"] <= long_trip})
+          short_trips_arr
 
+        }
     }
 
     rule collect_trips {
@@ -52,11 +59,11 @@ ruleset trip_store {
         select when explicit trip_processed
         {
         send_directive("erasing") with
-              trip_length = trip{"mileage"};
+          trip_length = "50";
         }
         fired {
-        clear ent:trips
-        clear ent:long_trips
+        clear ent:trips;
+        clear ent:long_trips;
         }
       }
 }
