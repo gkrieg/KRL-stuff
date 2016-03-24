@@ -12,7 +12,11 @@ ruleset manage_fleet {
 
     }
     global {
-
+      children = function() {
+        results = wranglerOS:children();
+        children = results{"children"};
+        children;
+      }
     }
 
     rule create_vehicle {
