@@ -43,4 +43,23 @@ ruleset track_trips {
           attributes event:attrs();
         }
       }
+
+
+  rule createWellKnown {
+      select when wrangler init_events
+      pre {
+        attr = {}.put(["channel_name"],"Well_Known")
+                        .put(["channel_type"],"Pico_Tutorial")
+                        .put(["attributes"],"")
+                        .put(["policy"],"")
+                        ;
+      }
+      {
+          event:send({"cid": meta:eci()}, "wrangler", "channel_creation_requested")
+          with attrs = attr.klog("attributes: ");
+      }
+      always {
+        log("created wellknown channel");
+      }
+    }
 }
