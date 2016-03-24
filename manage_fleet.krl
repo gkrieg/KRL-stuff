@@ -24,13 +24,12 @@ ruleset manage_fleet {
                               ;
     }
     {
-    send_directive("creating"); 
+    send_directive("creating");
     event:send({"cid":meta:eci()}, "wrangler", "child_creation")  // wrangler os event.
       with attrs = event:attr("name").klog("attributes: "); // needs a name attribute for child
     }
 
 	}
-      }
 
       rule clear_trips {
         select when car trip_reset
