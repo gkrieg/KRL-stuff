@@ -66,7 +66,7 @@ ruleset track_trips {
 
 
 rule wellKnownCreated {
-    select when wrangler channel_created where channel_name eq "Well_Known" && channel_type eq "Pico_Tutorial"
+    select when wrangler channel_created 
     pre {
         // find parent
         parent_results = wrangler_api:parent();
