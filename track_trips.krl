@@ -78,8 +78,7 @@ rule wellKnownCreated {
         attributes = init_attributes.put(["well_known"],well_known_eci);
     }
     {
-        event:send({"cid":parent_eci.klog("parent_eci: ")}, "subscriptions", "child_well_known_created")
-            with attrs = attributes.klog("event:send attrs: ");
+        send_directive("I'm HERE");
     }
     always {
       log("parent notified of well known channel");
