@@ -56,24 +56,4 @@ ruleset manage_fleet {
     }
 }
 
-rule wellKnownCreated {
-    select when wrangler channel_created where channel_name eq "Well_Known" && channel_type eq "Pico_Tutorial"
-    pre {
-        // find parent
-        parent_results = wrangler_api:parent();
-        parent = parent_results{'parent'};
-        parent_eci = parent[0].klog("parent eci: ");
-        well_known = wrangler_api:channel("Well_Known").klog("well known: ");
-        well_known_eci = well_known{"cid"};
-        init_attributes = event:attrs();
-        attributes = init_attributes.put(["well_known"],well_known_eci);
-    }
-    {
-        event:send({"cid":parent_eci.klog("parent_eci: ")}, "subscriptions", "child_well_known_created")
-            with attrs = attributes.klog("event:send attrs: ");
-    }
-    always {
-      log("parent notified of well known channel");
-    }
-  }
 }
