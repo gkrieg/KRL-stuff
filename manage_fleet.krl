@@ -9,7 +9,7 @@ ruleset manage_fleet {
         sharing on
 
         use module  b507199x5 alias wranglerOS
-
+        provides children
     }
     global {
       children = function() {
