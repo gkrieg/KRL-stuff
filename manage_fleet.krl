@@ -48,6 +48,7 @@ ruleset manage_fleet {
                       ;
     }
     {
+        send_directive("creating subscription");
         event:send({"cid":sibling_well_known_eci.klog("sibling_well_known_eci: ")}, "wrangler", "subscription")
             with attrs = attributes.klog("attributes for subscription: ");
     }
