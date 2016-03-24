@@ -30,16 +30,4 @@ ruleset manage_fleet {
     }
 
 	}
-
-      rule clear_trips {
-        select when car trip_reset
-        {
-        send_directive("erasing") with
-          trip_length = "50";
-        }
-        fired {
-        clear ent:trips;
-        clear ent:long_trips;
-        }
-      }
 }
