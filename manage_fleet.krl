@@ -34,6 +34,7 @@ ruleset manage_fleet {
     }
 
 	}
+
   rule requestSubscription { // ruleset for parent
     select when subscriptions child_well_known_created well_known re#(.*)# setting (sibling_well_known_eci)
             and subscriptions child_well_known_created well_known re#(.*)# setting (child_well_known_eci)
@@ -48,12 +49,12 @@ ruleset manage_fleet {
                       ;
     }
     {
-
+        send_directive("creating subscription");
         event:send({"cid":sibling_well_known_eci.klog("sibling_well_known_eci: ")}, "wrangler", "subscription")
             with attrs = attributes.klog("attributes for subscription: ");
     }
     always{
-    send_directive("creating subscription");
+
       log("send child well known " +sibling_well_known_eci+ "subscription event for child well known "+child_well_known_eci);
     }
 }
