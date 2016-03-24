@@ -45,23 +45,25 @@ ruleset track_trips {
       }
 
 
-  rule createWellKnown {
-      select when wrangler init_events
-      pre {
-        attr = {}.put(["channel_name"],"Well_Known")
-                        .put(["channel_type"],"Pico_Tutorial")
-                        .put(["attributes"],"")
-                        .put(["policy"],"")
-                        ;
+
+    rule createWellKnown {
+        select when wrangler init_events
+        pre {
+          attr = {}.put(["channel_name"],"Well_Known")
+                          .put(["channel_type"],"Pico_Tutorial")
+                          .put(["attributes"],"")
+                          .put(["policy"],"")
+                          ;
+        }
+        {
+            event:send({"cid": meta:eci()}, "wrangler", "channel_creation_requested")
+            with attrs = attr.klog("attributes: ");
+        }
+        always {
+          log("created wellknown channel");
+        }
       }
-      {
-          event:send({"cid": meta:eci()}, "wrangler", "channel_creation_requested")
-          with attrs = attr.klog("attributes: ");
-      }
-      always {
-        log("created wellknown channel");
-      }
-    }
+
 
 rule wellKnownCreated {
     select when wrangler channel_created where channel_name eq "Well_Known" && channel_type eq "Pico_Tutorial"
