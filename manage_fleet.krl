@@ -15,7 +15,7 @@ ruleset manage_fleet {
       children = function() {
         results = wranglerOS:children();
         children = results{"children"};
-        children;
+        children
       }
     }
 
